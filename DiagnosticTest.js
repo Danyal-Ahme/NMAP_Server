@@ -3,7 +3,7 @@ const dns = require('dns');
 const urlModule = require('url');
 const sslChecker = require('ssl-checker');
 const Nmap = require('node-nmap');
-Nmap.nmapLocation = 'C:\\Program Files (x86)\\Nmap\\nmap.exe'; // Adjust path as per your system
+Nmap.nmapLocation = '/usr/bin/nmap'; // Adjust path as per your system
 
 // Function to check if URL is reachable
 function checkUrl(url) {
