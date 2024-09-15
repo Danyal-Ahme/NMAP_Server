@@ -1,15 +1,16 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const port = 5000;
+const port = 3000;
 const axios = require("axios");
-const { runDiagnostics } = require("./DiagnosticTest")
+const { runTools } = require("./PenetrationTest")
 // Middleware
 app.use(cors()); 
 app.use(express.json());
 
 // Example route
 app.get("/", (req, res) => {
+  req = "https://www.facebook.com";
   res.json({ message: "Hello from the backend!" });
 });
 
@@ -17,7 +18,7 @@ app.post("/generate", async (req, res) => {
   console.log("from server");
   const websiteLink =  req.body.url; // Ensure the key matches the frontend
   console.log(`Received link: ${websiteLink}`);
-  const result = await runDiagnostics(websiteLink);
+  const result = await runTools(websiteLink);
   console.log("Response", result);
   try {
 
