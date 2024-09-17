@@ -168,12 +168,12 @@ async function runTools(url) {
     Result.responseTime = await measureResponseTime(url);
     console.log("Checking SSL info...");
     Result.sslInfo = await checkSsl(hostname);
-    console.log("Running Nmap scan...");
-    Result.nmapInfo = await runNmapScan(hostname);
-    console.log("Running Nmap vulnerability scan...");
-    Result.nmapVulnInfo = await runNmapVulnScan(hostname);
-    console.log("Running OWASP ZAP scan...");
-    Result.owaspInfo = await runZapScan(url);
+    //console.log("Running Nmap scan...");
+    //Result.nmapInfo = await runNmapScan(hostname);
+    //console.log("Running Nmap vulnerability scan...");
+    //Result.nmapVulnInfo = await runNmapVulnScan(hostname);
+    //console.log("Running OWASP ZAP scan...");
+    //Result.owaspInfo = await runZapScan(url);
 
     console.log("All scans completed.");
   } catch (error) {
