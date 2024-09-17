@@ -3,7 +3,9 @@ const dns = require('dns');
 const urlModule = require('url');
 const sslChecker = require('ssl-checker');
 const Nmap = require('node-nmap');
-Nmap.nmapLocation = '/usr/bin/nmap'; // Adjust path as per your system
+const { exec } = require('child_process');
+
+Nmap.nmapLocation = 'C:\\Program Files (x86)\\Nmap\\nmap.exe'; // Adjust path as per your system
 
 // Function to check if URL is reachable
 function checkUrl(url) {
@@ -90,6 +92,37 @@ function runNmapVulnScan(target) {
   });
 }
 
+// Function to run SQLmap
+function runSQLMap(url) {
+  return new Promise((resolve, reject) => {
+    const pythonPath = `"C:\\Program Files\\Python312\\python.exe"`; // Adjust this path
+    const sqlmapPath = `"C:\\Program Files\\sqlmapproject-sqlmap-51cdc98\\sqlmap.py"`; // Adjust this path
+    const command = `${pythonPath} ${sqlmapPath} -u "${url}" --batch`;
+
+    exec(command, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Error executing SQLmap: ${error.message}`);
+        reject(error);
+        return;
+      }
+      if (stderr) {
+        console.error(`SQLmap stderr: ${stderr}`);
+        reject(new Error(stderr));
+        return;
+      }
+
+      // Parse and filter SQLmap output
+      const outputLines = stdout.split('\n');
+      const relevantResults = outputLines.filter(line => 
+        line.includes('[ERROR]') || line.includes('[INFO]')
+      );
+
+      // Resolve with filtered results
+      resolve(relevantResults);
+    });
+  });
+}
+
 async function runDiagnostics(url) {
   const diagnostics = {
     urlInfo: null,
@@ -98,6 +131,7 @@ async function runDiagnostics(url) {
     sslInfo: null,
     nmapInfo: null,
     nmapVulnInfo: null,
+    sqlmapInfo: null,
     error: null,
   };
 
@@ -115,6 +149,9 @@ async function runDiagnostics(url) {
 
     // Run Nmap vulnerability scan
     diagnostics.nmapVulnInfo = await runNmapVulnScan(hostname);
+
+    // Run SQLmap scan
+    diagnostics.sqlmapInfo = await runSQLMap(url);
 
     console.log(diagnostics);
   } catch (error) {
