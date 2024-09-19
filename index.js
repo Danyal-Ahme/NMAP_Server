@@ -1,9 +1,9 @@
-import Groq from "groq-sdk";
-import cors from "cors";
-import express from "express";
-import { runTools } from "./PenetrationTest.js";
-import dotenv from "dotenv";
-import PDFDocument from "pdfkit";
+const Groq = require("groq-sdk");
+const cors = require("cors");
+const express = require("express");
+const { runTools } = require("./PenetrationTest.js");
+const dotenv = require("dotenv");
+const PDFDocument = require("pdfkit");
 
 dotenv.config();
 const port = 3000;
